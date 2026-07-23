@@ -472,6 +472,71 @@
     });
   }
 
+  // Responsive sport bar: chips that don't fit collapse into a "⋯" menu.
+  function layoutSports() {
+    const nav = $('#sportSwitch');
+    const moreWrap = $('#sportMore');
+    const moreBtn = $('#sportMoreBtn');
+    const chips = Array.from(nav.querySelectorAll('.sport-chip'));
+    if (!chips.length) return;
+
+    // reveal everything, hide the menu button, and measure the natural layout.
+    // Measure with getBoundingClientRect relative to the nav so the brand/tools
+    // widths don't skew the math (offsetLeft would be relative to the page).
+    chips.forEach((c) => { c.hidden = false; });
+    moreWrap.hidden = true;
+    let navRect = nav.getBoundingClientRect();
+    let rights = chips.map((c) => c.getBoundingClientRect().right - navRect.left);
+
+    if (Math.max.apply(null, rights) <= navRect.width + 0.5) {
+      moreBtn.classList.remove('active');
+      return; // all sports fit — no menu needed
+    }
+
+    // some overflow: show the menu button (it sits outside the nav, so the nav
+    // shrinks) then push the chips that no longer fit into the menu
+    moreWrap.hidden = false;
+    navRect = nav.getBoundingClientRect();
+    rights = chips.map((c) => c.getBoundingClientRect().right - navRect.left);
+    const limit = navRect.width;
+    const hidden = [];
+    chips.forEach((c, i) => {
+      if (rights[i] > limit + 0.5) { c.hidden = true; hidden.push(c.dataset.sport); }
+    });
+
+    if (!hidden.length) { moreWrap.hidden = true; moreBtn.classList.remove('active'); return; }
+    buildSportMenu(hidden);
+    moreBtn.classList.toggle('active', hidden.indexOf(state.sportKey) !== -1);
+  }
+
+  function buildSportMenu(keys) {
+    const menu = $('#sportMenu');
+    menu.innerHTML = '';
+    keys.forEach((key) => {
+      const s = SPORTS[key];
+      const b = document.createElement('button');
+      b.className = 'menu-item' + (key === state.sportKey ? ' active' : '');
+      b.setAttribute('role', 'menuitem');
+      b.dataset.sport = key;
+      b.innerHTML = `<span class="chip-emoji">${s.emoji}</span><span>${s.name}</span>`;
+      b.title = s.blurb;
+      b.addEventListener('click', () => { switchSport(key); closeSportMenu(); });
+      menu.appendChild(b);
+    });
+  }
+
+  function openSportMenu() {
+    $('#sportMenu').hidden = false;
+    $('#sportMoreBtn').setAttribute('aria-expanded', 'true');
+  }
+  function closeSportMenu() {
+    $('#sportMenu').hidden = true;
+    $('#sportMoreBtn').setAttribute('aria-expanded', 'false');
+  }
+  function toggleSportMenu() {
+    if ($('#sportMenu').hidden) openSportMenu(); else closeSportMenu();
+  }
+
   function switchSport(key) {
     // switching sports starts a fresh match under that sport's defaults,
     // keeping the current team names & sound preference
@@ -482,6 +547,7 @@
     state = freshMatch(key, null, names, 0, sound);
     updateClock();
     render();
+    layoutSports();   // refresh active highlight / menu state for the new sport
     save();
     toast(`${SPORTS[key].name} — ${SPORTS[key].blurb}`);
   }
@@ -646,6 +712,7 @@
     };
     if (map[k]) { e.preventDefault(); map[k](); }
     if (e.key === 'Escape') {
+      closeSportMenu();
       ['#setupOverlay', '#helpOverlay', '#winOverlay'].forEach((s) => {
         if (!$(s).hidden) closeOverlay(s);
       });
@@ -676,6 +743,17 @@
     $('#btnUndo').addEventListener('click', undo);
     $('#btnSwap').addEventListener('click', swapSides);
     $('#btnReset').addEventListener('click', () => resetMatch(true));
+
+    // responsive sport overflow menu
+    $('#sportMoreBtn').addEventListener('click', (e) => { e.stopPropagation(); toggleSportMenu(); });
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('#sportMore')) closeSportMenu();
+    });
+    let rafId = null;
+    window.addEventListener('resize', () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => { closeSportMenu(); layoutSports(); });
+    });
 
     // tools
     $('#btnSetup').addEventListener('click', openSetup);
@@ -731,6 +809,9 @@
     wire();
     updateClock();
     render();
+    layoutSports();
+    // re-run once more after fonts settle so chip widths are final
+    requestAnimationFrame(layoutSports);
   }
 
   document.addEventListener('DOMContentLoaded', init);

@@ -60,7 +60,7 @@ const SPORTS = {
   },
   tennis: {
     key: 'tennis',
-    name: 'Tennis (Tie-break)',
+    name: 'Tennis',
     emoji: '🎾',
     accent: '#c6e34d',
     points: 7, winBy: 2, cap: 0, bestOf: 3,

@@ -97,23 +97,63 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
   font-size: .78rem; color: var(--text-dim); margin-top: 3px; font-weight: 600;
 }
 
-/* sport chips */
+/* sport chips + responsive overflow ("more") menu */
 .sport-switch {
-  display: flex; gap: 8px; flex: 1;
-  overflow-x: auto; padding: 4px 2px;
-  scrollbar-width: none;
+  display: flex; align-items: center; gap: 8px;
+  flex: 1; min-width: 0;
 }
-.sport-switch::-webkit-scrollbar { display: none; }
+.sport-list {
+  display: flex; gap: 8px;
+  flex: 1 1 0; min-width: 0;      /* always fill available width (stable clientWidth) */
+  overflow: hidden;              /* chips past the edge get moved into the menu by JS */
+  padding: 4px 2px;
+}
+.sport-chip[hidden] { display: none; }
+
+.sport-more { position: relative; flex: none; }
+.sport-more[hidden] { display: none; }
+.more-btn.active {
+  color: #05100a;
+  background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 60%, #fff));
+  border-color: transparent;
+}
+.sport-menu {
+  position: absolute; top: calc(100% + 8px); right: 0; z-index: 60;
+  display: flex; flex-direction: column; gap: 4px;
+  min-width: 190px; padding: 8px;
+  background: var(--bg-grad-1);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  animation: menuPop .16s var(--ease);
+}
+.sport-menu[hidden] { display: none; }
+@keyframes menuPop { from { opacity: 0; transform: translateY(-6px) scale(.97); } }
+.sport-menu .menu-item {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%; padding: 10px 12px;
+  border: none; background: transparent;
+  border-radius: 10px;
+  color: var(--text); font-size: .88rem; font-weight: 600;
+  text-align: left; white-space: nowrap;
+  transition: background .15s var(--ease);
+}
+.sport-menu .menu-item:hover { background: var(--surface-2); }
+.sport-menu .menu-item .chip-emoji { font-size: 1.1rem; }
+.sport-menu .menu-item.active {
+  color: #05100a;
+  background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 60%, #fff));
+}
 .sport-chip {
-  display: inline-flex; align-items: center; gap: 7px;
+  display: inline-flex; align-items: center; gap: 6px;
   white-space: nowrap;
-  padding: 9px 14px;
+  padding: 8px 12px;
   border: 1px solid var(--border);
   background: var(--surface);
   color: var(--text-dim);
   border-radius: 999px;
-  font-size: .82rem; font-weight: 600;
-  transition: all .25s var(--ease);
+  font-size: .8rem; font-weight: 600;
+  transition: color .2s var(--ease), background .2s var(--ease), transform .2s var(--ease);
 }
 .sport-chip:hover { color: var(--text); transform: translateY(-1px); }
 .sport-chip .chip-emoji { font-size: 1.05rem; }
@@ -556,6 +596,11 @@ kbd {
   .score { font-size: clamp(4rem, 20vw, 8rem); }
   .brand-text p { display: none; }
   .pt { width: 52px; height: 46px; font-size: 1.4rem; }
+
+  /* give the sport bar its own full-width row so it has room for chips */
+  .brand { order: 0; }
+  .tools { order: 1; }
+  .sport-switch { order: 2; flex-basis: 100%; width: 100%; }
 }
 
 @media (max-width: 420px) {

@@ -32,9 +32,24 @@
       </div>
     </div>
 
-    <nav class="sport-switch" id="sportSwitch" aria-label="Choose sport">
-      <!-- sport chips injected by JS -->
-    </nav>
+    <div class="sport-switch">
+      <nav class="sport-list" id="sportSwitch" aria-label="Choose sport">
+        <!-- sport chips injected by JS -->
+      </nav>
+      <div class="sport-more" id="sportMore" hidden>
+        <button class="icon-btn more-btn" id="sportMoreBtn" title="More sports"
+                aria-haspopup="true" aria-expanded="false" aria-label="More sports">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+            <circle cx="5" cy="12" r="2"></circle>
+            <circle cx="12" cy="12" r="2"></circle>
+            <circle cx="19" cy="12" r="2"></circle>
+          </svg>
+        </button>
+        <div class="sport-menu" id="sportMenu" role="menu" hidden>
+          <!-- overflow sports injected by JS -->
+        </div>
+      </div>
+    </div>
 
     <div class="tools">
       <button class="icon-btn" id="btnSetup" title="Match setup (E)" aria-label="Match setup">
