@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0b1020" />
+  <title>NetScore — Scoreboard for Net Sports</title>
+  <meta name="description" content="A beautiful, advanced scoreboard for badminton, volleyball, pickleball, table tennis and more." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8F%B8%3C/text%3E%3C/svg%3E" />
+</head>
+<body>
+  <!-- ===================== TOP BAR ===================== -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="9"></circle>
+          <path d="M12 3v18M3 12h18"></path>
+        </svg>
+      </span>
+      <div class="brand-text">
+        <h1>NetScore</h1>
+        <p id="sportLabel">Badminton</p>
+      </div>
+    </div>
+
+    <nav class="sport-switch" id="sportSwitch" aria-label="Choose sport">
+      <!-- sport chips injected by JS -->
+    </nav>
+
+    <div class="tools">
+      <button class="icon-btn" id="btnSetup" title="Match setup (E)" aria-label="Match setup">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+      </button>
+      <button class="icon-btn" id="btnTheme" title="Toggle theme (T)" aria-label="Toggle theme">
+        <svg class="ico-moon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        <svg class="ico-sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+      </button>
+      <button class="icon-btn" id="btnFullscreen" title="Fullscreen (F)" aria-label="Fullscreen">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M16 21h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="icon-btn" id="btnHelp" title="Keyboard shortcuts (?)" aria-label="Help">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ===================== MATCH META ===================== -->
+  <section class="matchbar">
+    <div class="meta-chip" id="metaGame" title="Current game / set">Game 1</div>
+    <div class="meta-chip" id="metaTarget">to 21 · win by 2</div>
+    <div class="meta-chip call" id="metaCall" title="Score call — server / receiver / server number" hidden></div>
+    <div class="meta-chip clock" id="metaClock">
+      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+      <span id="clockText">00:00</span>
+    </div>
+    <div class="meta-chip" id="metaBestOf">Best of 3</div>
+  </section>
+
+  <!-- ===================== SCOREBOARD ===================== -->
+  <main class="board" id="board">
+    <!-- TEAM A -->
+    <section class="team team-a" id="teamA" data-team="0">
+      <div class="team-head">
+        <span class="serve-dot" id="serveA" title="Serving — click to toggle"></span>
+        <span class="srv-badge" id="srvA" hidden></span>
+        <input class="team-name" id="nameA" value="Team A" maxlength="18" aria-label="Team A name" spellcheck="false" />
+        <div class="sets" id="setsA" aria-label="Games won by Team A"></div>
+      </div>
+      <button class="score-hit" id="hitA" aria-label="Add point to Team A">
+        <span class="score" id="scoreA">0</span>
+      </button>
+      <div class="pointpad">
+        <button class="pt minus" id="minusA" aria-label="Remove point from Team A">–</button>
+        <span class="pt-label">points</span>
+        <button class="pt plus" id="plusA" aria-label="Add point to Team A">+</button>
+      </div>
+    </section>
+
+    <!-- CENTER -->
+    <div class="center">
+      <div class="vs">VS</div>
+      <button class="ctrl" id="btnUndo" title="Undo (U)">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v6h6"></path><path d="M3.51 13a9 9 0 1 0 2.13-9.36L3 7"></path></svg>
+        <span>Undo</span>
+      </button>
+      <button class="ctrl" id="btnSwap" title="Swap sides (S)">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3L4 7l4 4"></path><path d="M4 7h16"></path><path d="M16 21l4-4-4-4"></path><path d="M20 17H4"></path></svg>
+        <span>Swap</span>
+      </button>
+      <button class="ctrl danger" id="btnReset" title="Reset match (R)">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path></svg>
+        <span>Reset</span>
+      </button>
+    </div>
+
+    <!-- TEAM B -->
+    <section class="team team-b" id="teamB" data-team="1">
+      <div class="team-head">
+        <div class="sets" id="setsB" aria-label="Games won by Team B"></div>
+        <input class="team-name" id="nameB" value="Team B" maxlength="18" aria-label="Team B name" spellcheck="false" />
+        <span class="srv-badge" id="srvB" hidden></span>
+        <span class="serve-dot" id="serveB" title="Serving — click to toggle"></span>
+      </div>
+      <button class="score-hit" id="hitB" aria-label="Add point to Team B">
+        <span class="score" id="scoreB">0</span>
+      </button>
+      <div class="pointpad">
+        <button class="pt minus" id="minusB" aria-label="Remove point from Team B">–</button>
+        <span class="pt-label">points</span>
+        <button class="pt plus" id="plusB" aria-label="Add point to Team B">+</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================== SETUP DIALOG ===================== -->
+  <div class="overlay" id="setupOverlay" hidden>
+    <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="setupTitle">
+      <header class="dialog-head">
+        <h2 id="setupTitle">Match Setup</h2>
+        <button class="icon-btn" id="closeSetup" aria-label="Close">✕</button>
+      </header>
+
+      <div class="dialog-body">
+        <div class="field">
+          <label>Sport</label>
+          <div class="sport-grid" id="setupSports"></div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="setName0">Left / Team A</label>
+            <input id="setName0" type="text" maxlength="18" />
+          </div>
+          <div class="field">
+            <label for="setName1">Right / Team B</label>
+            <input id="setName1" type="text" maxlength="18" />
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="setPoints">Points per game</label>
+            <input id="setPoints" type="number" min="1" max="99" />
+          </div>
+          <div class="field">
+            <label for="setWinBy">Win by</label>
+            <input id="setWinBy" type="number" min="1" max="5" />
+          </div>
+          <div class="field">
+            <label for="setCap">Hard cap <span class="hint">(0 = none)</span></label>
+            <input id="setCap" type="number" min="0" max="99" />
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="setBestOf">Best of (games)</label>
+            <select id="setBestOf">
+              <option value="1">1 (single game)</option>
+              <option value="3">3</option>
+              <option value="5">5</option>
+              <option value="7">7</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="setStartServer">First serve</label>
+            <select id="setStartServer">
+              <option value="0">Left / Team A</option>
+              <option value="1">Right / Team B</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="setScoring">Scoring</label>
+            <select id="setScoring">
+              <option value="rally">Rally — every rally scores</option>
+              <option value="sideout">Side-out — only the server scores</option>
+            </select>
+          </div>
+          <div class="field" id="formatField">
+            <label for="setFormat">Format <span class="hint">(side-out only)</span></label>
+            <select id="setFormat">
+              <option value="doubles">Doubles — 2 servers, then side-out</option>
+              <option value="singles">Singles — 1 server, then side-out</option>
+            </select>
+          </div>
+        </div>
+
+        <p class="field-note" id="scoringNote"></p>
+
+        <label class="switch-row">
+          <input type="checkbox" id="setSound" />
+          <span>Sound effects</span>
+        </label>
+      </div>
+
+      <footer class="dialog-foot">
+        <button class="btn ghost" id="cancelSetup">Cancel</button>
+        <button class="btn primary" id="applySetup">Start / Apply</button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ===================== HELP DIALOG ===================== -->
+  <div class="overlay" id="helpOverlay" hidden>
+    <div class="dialog small" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+      <header class="dialog-head">
+        <h2 id="helpTitle">Keyboard Shortcuts</h2>
+        <button class="icon-btn" id="closeHelp" aria-label="Close">✕</button>
+      </header>
+      <div class="dialog-body keys">
+        <div><kbd>Q</kbd> / <kbd>A</kbd><span>Team A  +1 / −1</span></div>
+        <div><kbd>P</kbd> / <kbd>L</kbd><span>Team B  +1 / −1</span></div>
+        <div><kbd>Space</kbd><span>Toggle server</span></div>
+        <div><kbd>U</kbd><span>Undo last action</span></div>
+        <div><kbd>S</kbd><span>Swap sides</span></div>
+        <div><kbd>R</kbd><span>Reset match</span></div>
+        <div><kbd>E</kbd><span>Open setup</span></div>
+        <div><kbd>T</kbd><span>Toggle theme</span></div>
+        <div><kbd>F</kbd><span>Fullscreen</span></div>
+        <div><kbd>?</kbd><span>This help</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== WIN OVERLAY ===================== -->
+  <div class="overlay win-overlay" id="winOverlay" hidden>
+    <canvas id="confetti" class="confetti"></canvas>
+    <div class="win-card" role="dialog" aria-modal="true">
+      <p class="win-kicker">Match Point</p>
+      <h2 class="win-name" id="winName">Team A</h2>
+      <p class="win-sub" id="winSub">wins the match</p>
+      <p class="win-score" id="winScore"></p>
+      <div class="win-actions">
+        <button class="btn ghost" id="winClose">Keep viewing</button>
+        <button class="btn primary" id="winNew">New match</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- toast -->
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="js/sports.js"></script>
+  <script src="js/confetti.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
