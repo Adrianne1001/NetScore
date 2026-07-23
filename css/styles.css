@@ -19,6 +19,7 @@
 
 /* dark (default) */
 :root[data-theme="dark"] {
+  color-scheme: dark;   /* native dropdowns, scrollbars & date pickers render dark */
   --bg: #0b1020;
   --bg-grad-1: #101830;
   --bg-grad-2: #0a0e1c;
@@ -34,6 +35,7 @@
 
 /* light */
 :root[data-theme="light"] {
+  color-scheme: light;
   --bg: #eef1f8;
   --bg-grad-1: #ffffff;
   --bg-grad-2: #e3e8f4;
@@ -428,6 +430,11 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
   transition: border .2s;
 }
 .field input:focus, .field select:focus { outline: none; border-color: var(--accent); }
+/* explicit option colors so the native popup list is readable in both themes */
+.field select option {
+  background: var(--bg-grad-1);
+  color: var(--text);
+}
 
 .sport-grid {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); gap: 10px;

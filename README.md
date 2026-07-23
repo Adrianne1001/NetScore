@@ -66,3 +66,17 @@ Open **Match Setup** (gear icon or `E`) to change team names, points per game,
 win-by, hard cap, best-of, first server, and sound — or pick **Custom** to
 define everything yourself. New sports can be added by extending
 `SPORTS` and `SPORT_ORDER` in [`js/sports.js`](js/sports.js).
+
+---
+
+## 🎉 Never lose track of the score again!
+
+Play pickleball 🥒 or badminton 🏸? NetScore turns any phone, tablet, or laptop
+into a big, easy-to-read scoreboard that is **free, no sign-up, nothing to install.**
+Just open it and play.
+
+It works great for other net games too, like volleyball 🏐 and table tennis 🏓,
+and you can customize the setup to fit however your group likes to play.
+
+Tap to score, glance from across the court, and let it handle the rest.
+Grab a device and give it a try! 🏆
