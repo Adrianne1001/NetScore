@@ -560,6 +560,32 @@ kbd {
 .win-score { margin-top: 14px; font-size: .95rem; color: var(--text); font-variant-numeric: tabular-nums; }
 .win-actions { display: flex; gap: 12px; justify-content: center; margin-top: 26px; }
 
+/* =================================================== FOOTER ===== */
+.site-footer {
+  display: flex; flex-wrap: wrap;
+  align-items: center; justify-content: center;
+  gap: 8px 12px;
+  padding: 14px clamp(14px, 3vw, 34px) 20px;
+  font-size: .8rem; font-weight: 500;
+  color: var(--text-dim);
+  border-top: 1px solid var(--border);
+}
+.site-footer strong { color: var(--text); font-weight: 700; }
+.credit-sep { opacity: .5; }
+.credit-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--text-dim);
+  text-decoration: none;
+  padding: 4px 8px; border-radius: 999px;
+  transition: color .2s var(--ease), background .2s var(--ease);
+}
+.credit-link:hover { color: var(--accent); background: var(--surface); }
+
+@media (max-width: 480px) {
+  .site-footer { flex-direction: column; gap: 6px; text-align: center; }
+  .credit-sep { display: none; }
+}
+
 /* ==================================================== TOAST ===== */
 .toast {
   position: fixed; bottom: 26px; left: 50%; transform: translate(-50%, 20px);
