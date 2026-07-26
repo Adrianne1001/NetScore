@@ -90,4 +90,4 @@ const SPORTS = {
   }
 };
 
-const SPORT_ORDER = ['badminton', 'volleyball', 'pickleball', 'tabletennis', 'tennis', 'sepak', 'custom'];
+const SPORT_ORDER = ['pickleball', 'badminton', 'volleyball', 'tabletennis', 'tennis', 'sepak', 'custom'];
